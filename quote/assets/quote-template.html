@@ -1,7 +1,8 @@
 <!--
   견적서 템플릿 (A4). {{토큰}}만 채워 쓴다.
   - 회사 고정 정보 토큰({{회사명}} 등)은 company.md 값으로 채운다. 여기에 직접 적지 않는다(고정 정보는 한 곳에서만).
-  - {{도장}}: 기본은 빈 문자열. 실제 도장 스캔 이미지가 있을 때만 <img class="seal" src="..."> 로 채운다.
+  - {{도장}}: 채우지 말고 그대로 둔다. render.py 가 assets/seal.png(.jpg) 이 있으면 대표자 옆에 직인을 찍고, 없으면 빈칸으로 둔다.
+    도장을 빼야 하는 견적서만 빈 문자열로 채운다.
   - 렌더: python3 scripts/render.py 채운파일.html 결과.pdf
 -->
 <!doctype html>
@@ -36,7 +37,10 @@
   .qh-right .co{font-size:13.5px;font-weight:700;margin-top:6px}
   .qh-right .ceo{font-size:13.5px;margin-top:2px}
   .qh-right .meta{font-family:var(--mono);font-size:12px;color:var(--soft);margin-top:3px}
-  .qh-right .seal{position:absolute;right:-6px;bottom:-18px;width:78px;opacity:.9}
+  /* 직인: 대표자 이름 옆 (인) 위에 겹쳐 찍는다. 위아래 줄(회사명·사업자번호)은 도장 폭만큼 비켜 둔다 */
+  .qh-right .in{position:relative;display:inline-block;width:34px;margin-left:8px;text-align:center;color:var(--faint);font-size:12px}
+  .qh-right .seal{position:absolute;left:50%;top:50%;width:50px;height:50px;object-fit:contain;transform:translate(-50%,-50%);mix-blend-mode:multiply;pointer-events:none}
+  .qh-right:has(.seal) .co,.qh-right:has(.seal) .meta{padding-right:46px}
   .unit{text-align:right;font-size:11.5px;color:var(--faint);margin:26px 0 6px}
   table{border-collapse:collapse;width:100%;table-layout:fixed}
   .items th,.items td{border:1px solid var(--line);padding:9px 10px;font-size:13px;vertical-align:middle}
@@ -109,10 +113,9 @@
       <div class="logo">{{로고}}</div>
       <div class="addr">{{주소}}</div>
       <div class="co">{{회사명}}</div>
-      <div class="ceo">{{대표자직함}} {{대표자}}</div>
+      <div class="ceo">{{대표자직함}} {{대표자}}{{도장}}</div>
       <div class="meta">사업자등록번호 {{사업자번호}}</div>
       <div class="meta">TEL. {{연락처}}</div>
-      {{도장}}
     </div>
   </div>
 

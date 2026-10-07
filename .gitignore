@@ -2,3 +2,5 @@
 ._*
 __pycache__/
 *.pyc
+# 도장 이미지는 저장소에 올리지 않는다
+quote/assets/seal.*
